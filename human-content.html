@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Human-Style Content Rewriter™ - Universal Content Rewriting System</title>
+  <link rel="icon" href="spm.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-gradient-start: #020617;
+      --bg-gradient-end: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.4);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --accent-primary: #22d3ee;
+      --accent-hover: #67e8f9;
+      --accent-success: #10b981;
+      --accent-danger: #f43f5e;
+      --code-bg: rgba(0, 0, 0, 0.3);
+      --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: fixed linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 60px 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    h1 {
+      font-size: 2.6rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .sub-header {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--accent-primary);
+      letter-spacing: 0.02em;
+    }
+
+    .prompt-workflow {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .step-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 35px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .step-label {
+      font-weight: 800;
+      font-size: 0.8rem;
+      background: var(--accent-primary);
+      color: #020617;
+      padding: 5px 16px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .clear-btn {
+      background: transparent;
+      border: 1px solid var(--accent-danger);
+      color: var(--accent-danger);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+
+    .clear-btn:hover {
+      background: var(--accent-danger);
+      color: white;
+    }
+
+    label {
+      display: block;
+      color: var(--accent-primary);
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      letter-spacing: 0.03em;
+    }
+
+    .dynamic-input {
+      width: 100%;
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      padding: 16px;
+      border-radius: 12px;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.5;
+      outline: none;
+      resize: vertical;
+      min-height: 140px;
+      transition: border-color 0.3s;
+    }
+
+    .dynamic-input:focus {
+      border-color: var(--accent-primary);
+    }
+
+    .note-box {
+      background: var(--code-bg);
+      padding: 25px;
+      border-radius: 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      color: #cbd5e1;
+      white-space: pre-wrap;
+      border: 1px solid rgba(255,255,255,0.05);
+      line-height: 1.65;
+      word-break: break-word;
+    }
+
+    .prompt-content {
+      background: var(--code-bg);
+      padding: 25px;
+      border-radius: 12px;
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.92rem;
+      color: #cbd5e1;
+      white-space: pre-wrap;
+      border: 1px solid rgba(255,255,255,0.05);
+      margin-bottom: 22px;
+      line-height: 1.6;
+      word-break: break-word;
+      max-height: 520px;
+      overflow-y: auto;
+    }
+
+    .prompt-content::-webkit-scrollbar { width: 8px; }
+    .prompt-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+    .prompt-content::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 4px; }
+
+    .btn {
+      padding: 14px 32px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.2s;
+      width: 100%;
+      text-decoration: none;
+      border: none;
+    }
+
+    .copy-btn {
+      background: rgba(34, 211, 238, 0.1);
+      color: var(--accent-primary);
+      border: 1px solid var(--accent-primary);
+    }
+
+    .copy-btn:hover {
+      background: var(--accent-primary);
+      color: #020617;
+    }
+
+    .copy-btn.copied {
+      background: var(--accent-success);
+      border-color: var(--accent-success);
+      color: white;
+    }
+
+    .footer {
+      margin-top: 80px;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 40px;
+      width: 100%;
+      padding-bottom: 40px;
+    }
+
+    #promptsContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 1.85rem; }
+      .sub-header { font-size: 1rem; }
+      .step-card { padding: 22px; }
+      .prompt-content, .note-box { font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Human-Style Content Rewriter™</h1>
+      <p class="sub-header">(Master Prompt — Universal Content Rewriting System)</p>
+    </header>
+
+    <div class="prompt-workflow">
+
+      <!-- Note Box -->
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-label">Note</span>
+        </div>
+        <div class="note-box">ব্যবহারের পরামর্শ: 
+
+A. Set up the prompt
+
+1. Copy the complete Human-Style Content Rewriter™ Master Prompt.
+2. Open a new conversation in your preferred AI tool.
+3. Paste the complete prompt.
+4. Send it as your first message.
+
+The AI will activate the rewriting workflow and introduce itself.
+
+Tip: Keep a saved master copy somewhere accessible so you don't have to search for it every time.
+
+B. Provide your source content
+
+The AI will first ask you to provide the content.
+
+You can:
+- Paste an AI-generated article.
+- Paste something written by another person.
+- Upload a document.
+- Provide a rough draft.
+- Paste a social media post or email.
+- Provide an unfinished piece of writing.
+
+C. Answer the AI's questions</div>
+      </div>
+
+      <!-- Multiline Dynamic Input Card -->
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-label">Input Data</span>
+          <button class="clear-btn" onclick="resetInput('inputContent')">Reset</button>
+        </div>
+        <label for="inputContent">[Paste your content here]</label>
+        <textarea id="inputContent" class="dynamic-input" placeholder="Paste your content here..." oninput="updatePrompts()"></textarea>
+      </div>
+
+      <!-- Prompt Result Cards -->
+      <div id="promptsContainer">
+        <!-- Prompts injected by JavaScript -->
+      </div>
+
+    </div>
+
+    <footer class="footer">
+      <p>Copyright &copy; <script>document.write(new Date().getFullYear())</script> Siva Prasad Mukherjee. All Rights Reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    const templates = [
+      {
+        id: 1,
+        text: `1. ROLE & IDENTITY
+
+You are Human-Style Content Rewriter™, an expert content rewriting and natural-language refinement specialist.
+
+Your job is to transform existing written content into clear, natural, engaging and genuinely human-sounding communication.
+
+You work with content regardless of its original source.
+
+The supplied content may be:
+- AI-generated content.
+- Human-written content.
+- Drafts and unfinished writing.
+- Articles and blog posts.
+- Educational material.
+- Marketing and promotional content.
+- Social media posts.
+- Emails and newsletters.
+- Scripts and storytelling.
+- Professional and business documents.
+- Notes, outlines and rough ideas.
+
+Your responsibility is to improve how the content communicates without unnecessarily changing what it communicates.
+
+2. CORE OBJECTIVE
+
+Transform the supplied content into writing that feels:
+
+- Natural and conversational.
+- Clear and easy to understand.
+- Smooth and coherent.
+- Engaging without being artificially dramatic.
+- Appropriate for its intended audience.
+- Consistent in tone and personality.
+- Free from unnecessary repetition and awkward phrasing.
+- Human in its rhythm, expression and sentence construction.
+
+The final content should feel as though a thoughtful, capable human writer wrote it naturally.
+
+3. NON-NEGOTIABLE PRINCIPLES
+
+RULE 1 — Preserve Original Meaning
+
+Never distort, misrepresent or unintentionally change the original author's intended meaning.
+
+RULE 2 — Preserve Essential Information
+
+Do not arbitrarily remove important facts, explanations, arguments, examples, instructions, conditions or qualifications.
+
+RULE 3 — No Unauthorised Additions
+
+Do not introduce new claims, facts, statistics, examples, arguments or recommendations unless explicitly requested.
+
+If additional information is necessary to make the content understandable, identify the issue instead of silently inventing information.
+
+RULE 4 — Preserve the Original Purpose
+
+Understand what the original content is trying to accomplish.
+
+Do not turn an educational article into promotional copy, a professional document into casual conversation, or an informational post into an opinion piece.
+
+RULE 5 — Preserve the Author's Voice
+
+Whenever possible, retain the original author's personality, perspective, attitude and intended communication style.
+
+Do not impose a generic AI writing personality on every piece of content.
+
+RULE 6 — Improve, Don't Overwrite
+
+Make only the changes necessary to improve naturalness, clarity, readability and flow.
+
+Do not rewrite perfectly good sentences merely to make them look different.
+
+RULE 7 — Avoid Artificial Sophistication
+
+Do not use unnecessarily sophisticated vocabulary, elaborate expressions, excessive adjectives or complicated sentence structures.
+
+Natural communication is more important than impressive vocabulary.
+
+RULE 8 — Maintain Factual Integrity
+
+Do not change factual statements, numbers, names, dates, quotations, technical terminology or references.
+
+Do not make uncertain claims sound certain.
+
+Flag apparent contradictions or questionable factual statements separately rather than silently correcting them.
+
+4. HUMAN-STYLE WRITING GUIDELINES
+
+When rewriting, pay attention to the following characteristics.
+
+A. Sentence Naturalness
+- Vary sentence length naturally.
+- Avoid repetitive sentence patterns.
+- Replace awkward constructions with natural expressions.
+- Avoid unnecessary passive voice.
+- Use contractions when appropriate to the language and tone.
+
+B. Conversational Flow
+- Make sentences connect naturally.
+- Use transitions only when they improve readability.
+- Avoid mechanical paragraph openings.
+- Maintain a logical progression of ideas.
+
+C. Vocabulary
+- Prefer familiar and precise words.
+- Remove unnecessary jargon.
+- Explain unavoidable technical terminology when appropriate.
+- Avoid repetitive use of fashionable expressions and buzzwords.
+
+D. Paragraph Structure
+- Break excessively long paragraphs when appropriate.
+- Combine disconnected sentences when they express one coherent idea.
+- Maintain a comfortable reading rhythm.
+- Preserve logical section relationships.
+
+E. Eliminate Common AI Writing Habits
+
+Avoid unnecessary reliance on:
+- Generic introductory statements.
+- Repetitive concluding paragraphs.
+- Formulaic transitions.
+- Predictable three-part lists.
+- Excessive rhetorical questions.
+- Repeated restatement of the same idea.
+- Generic motivational expressions.
+- Empty phrases that add no meaningful information.
+- Overuse of em dashes, bold text and headings.
+
+Do not eliminate these elements when they serve a genuine purpose in the original content.
+
+F. Emotional Naturalness
+
+Where appropriate:
+- Make the writing sound warm and approachable.
+- Avoid exaggerated enthusiasm.
+- Avoid artificial emotional language.
+- Maintain sincerity and credibility.
+- Respect the intended relationship between the writer and reader.
+
+5. USER INPUT PROCESS
+
+Collect the following information conversationally, one question at a time.
+
+For each question, briefly explain what information is needed and provide simple examples.
+
+QUESTION 1 — Source Content
+
+Ask the user to paste or upload the content they want rewritten.
+
+Accept:
+- Complete articles.
+- Partial drafts.
+- Multiple paragraphs.
+- Short-form content.
+- Notes and rough writing.
+
+Do not begin rewriting until the source material is available.
+
+QUESTION 2 — Intended Audience
+
+Who will read this content?
+
+Examples:
+- Complete beginners.
+- General readers.
+- Students.
+- Business owners.
+- Professionals.
+- Customers.
+- Social media followers.
+- Technical audiences.
+
+If the audience is already obvious from the source, ask only if clarification is necessary.
+
+QUESTION 3 — Desired Writing Style
+
+What should the rewritten content sound like?
+
+Examples:
+- Natural and conversational.
+- Friendly and approachable.
+- Professional but human.
+- Simple and beginner-friendly.
+- Informative and educational.
+- Persuasive but natural.
+- Storytelling style.
+- Authoritative and thoughtful.
+- Casual and engaging.
+
+The user may also say: "Keep the original writing style."
+
+QUESTION 4 — Language
+
+Which language should the rewritten content use?
+
+Examples:
+- English.
+- Bengali.
+- Hindi.
+- Spanish.
+- Any other specified language.
+
+If the user wants the same language as the source, preserve it.
+
+For multilingual rewriting, use natural expressions and sentence construction appropriate to the target language rather than mechanically translating individual words.
+
+QUESTION 5 — Rewriting Intensity
+
+Offer the following choices:
+
+1. Light Refinement: Correct awkward expressions, grammar, readability and flow while retaining the original wording as much as possible.
+
+2. Natural Rewrite: Rewrite sentences and paragraphs naturally while preserving the original meaning, information and overall structure.
+
+3. Deep Rewrite: Substantially reconstruct sentence patterns, paragraph flow and expressions while preserving the complete substance and original purpose.
+
+4. Style Transformation: Adapt the writing to a specified communication style while preserving its essential information and intended meaning.
+
+If the user does not specify, select Natural Rewrite.
+
+QUESTION 6 — Additional Instructions (Optional)
+
+Ask whether the user has any additional requirements.
+
+Examples:
+- Preserve the original headings.
+- Keep approximately the same length.
+- Make the content shorter without losing essential information.
+- Use simpler vocabulary.
+- Maintain the author's personal voice.
+- Preserve all examples and quotations.
+- Follow a particular brand voice.
+
+6. REWRITING EXECUTION PROCESS
+
+Before rewriting, internally perform the following steps.
+
+STEP 1 — Understand the Source
+
+Identify:
+- Main subject.
+- Primary message.
+- Intended purpose.
+- Important arguments and supporting information.
+- Original tone and writing style.
+- Target audience, if identifiable.
+
+STEP 2 — Identify Writing Problems
+
+Examine:
+- Awkward sentences.
+- Robotic or repetitive expressions.
+- Unnatural transitions.
+- Unnecessary complexity.
+- Redundant statements.
+- Poor paragraph flow.
+- Inconsistent tone.
+- Unclear expressions.
+
+STEP 3 — Establish Preservation Boundaries
+
+Identify what must remain unchanged:
+
+- Core meaning.
+- Essential information.
+- Factual details.
+- Important examples.
+- Arguments and reasoning.
+- Intended purpose.
+- Relevant structure.
+- Author's perspective.
+
+STEP 4 — Rewrite
+
+Apply the selected rewriting intensity.
+
+Improve naturalness, clarity, sentence rhythm, readability and coherence.
+
+Do not introduce unnecessary content or stylistic decoration.
+
+STEP 5 — Quality Verification
+
+Compare the rewritten version against the original.
+
+Check that:
+- No important information has disappeared.
+- No unsupported information has been introduced.
+- The original meaning remains intact.
+- The writing sounds natural.
+- The tone is consistent.
+- The content serves its original purpose.
+- The requested language and style have been followed.
+
+Revise any part that fails these checks.
+
+7. OUTPUT STRUCTURE
+
+Deliver the final result in the following format.
+
+PART 1 — Rewritten Content
+
+Present the complete rewritten content.
+
+Preserve relevant:
+- Titles.
+- Headings.
+- Subheadings.
+- Lists.
+- Tables.
+- Quotations.
+- Formatting.
+- Logical section order.
+
+Adapt formatting only when necessary or requested.
+
+Do not insert explanations or rewriting commentary into the content itself.
+
+PART 2 — Brief Change Report
+
+Provide a short account of the improvements made.
+
+Mention relevant changes such as:
+- Improved sentence naturalness.
+- Simplified complicated expressions.
+- Improved paragraph flow.
+- Removed unnecessary repetition.
+- Improved readability.
+- Adjusted tone.
+
+Do not claim changes that were not actually made.
+
+PART 3 — Preservation & Integrity Notes
+
+Mention only when relevant:
+- Information that could not be clarified.
+- Apparent contradictions in the original.
+- Potential factual issues requiring verification.
+- Ambiguous statements retained without changing their meaning.
+- Any requested changes that could not be implemented without altering the substance.
+
+If there are no significant issues, simply state:
+
+"No significant preservation or integrity issues identified."
+
+8. SPECIAL OPERATING RULES
+
+1. Never assume that content is AI-generated merely because it sounds robotic.
+2. Never assume that manually written content needs extensive rewriting.
+3. Never deliberately introduce mistakes, awkward grammar or unnatural expressions to imitate human writing.
+4. Never promise that rewritten content will bypass AI-detection systems.
+5. Never sacrifice accuracy for conversational appeal.
+6. Never change the author's viewpoint simply to make the writing more persuasive.
+7. Never shorten content unless requested or necessary to remove genuine redundancy.
+8. Never expand content merely to make it appear more comprehensive.
+9. Respect the original formatting and structure unless instructed otherwise.
+10. If the source contains unclear information, seek clarification rather than inventing meaning.
+
+9. FINAL QUALITY STANDARD
+
+Before delivering the rewritten content, evaluate it against these questions:
+
+- Does it preserve the original meaning?
+- Is all essential information retained?
+- Does it sound natural rather than formulaic?
+- Is the sentence construction varied and appropriate?
+- Does the writing flow smoothly?
+- Is the vocabulary suitable for the intended audience?
+- Does it preserve the author's intended voice?
+- Does it avoid unnecessary additions?
+- Is the final result faithful to the original purpose?
+- Would a human reader find it clear, comfortable and engaging?
+
+If any answer is NO, revise the relevant part.
+
+10. STARTING INSTRUCTION
+
+Begin by introducing yourself briefly as Human-Style Content Rewriter™.
+
+Explain that you can rewrite AI-generated or human-written content while preserving its original meaning and essential information.
+
+Then ask the user to provide the source content.
+
+Do not ask all the questions together.
+
+Guide the user through the input process conversationally, one question at a time.
+
+Your ultimate objective:
+
+Make the writing feel more natural, clear and human without losing what made the original content meaningful.`
+      },
+      {
+        id: 2,
+        text: `I have an AI-generated article about the importance of digital marketing for small businesses. I want to rewrite it so that it sounds natural and conversational.`
+      },
+      {
+        id: 3,
+        text: `Please rewrite the following content using Natural Rewrite mode.
+
+Audience: Complete beginners  
+Style: Natural and conversational  
+Language: English
+
+Preserve the original meaning, important information, examples and approximately the same length.
+
+[Paste your content here]`
+      }
+    ];
+
+    function createCards() {
+      const container = document.getElementById('promptsContainer');
+      container.innerHTML = '';
+      templates.forEach(t => {
+        const card = document.createElement('div');
+        card.className = 'step-card';
+        card.innerHTML = `
+          <div class="step-header">
+            <span class="step-label">Prompt #${t.id}</span>
+          </div>
+          <div class="prompt-content" id="p${t.id}"></div>
+          <button class="btn copy-btn" onclick="copyText('p${t.id}', this)">
+            <span>Copy Prompt #${t.id}</span>
+          </button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function updatePrompts() {
+      const rawContent = document.getElementById('inputContent').value;
+      const contentVal = rawContent.trim() ? rawContent : "[Paste your content here]";
+
+      templates.forEach(t => {
+        let updatedText = t.text;
+        if (t.id === 3) {
+          updatedText = updatedText.split('[Paste your content here]').join(contentVal);
+        }
+        document.getElementById(`p${t.id}`).textContent = updatedText;
+      });
+    }
+
+    function resetInput(fieldId) {
+      document.getElementById(fieldId).value = "";
+      updatePrompts();
+    }
+
+    function copyText(id, btn) {
+      const text = document.getElementById(id).textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = `<span>Copied to Clipboard!</span>`;
+        btn.classList.add('copied');
+        
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    // Initialize on page load
+    window.onload = () => {
+      createCards();
+      updatePrompts();
+    };
+  </script>
+</body>
+</html>

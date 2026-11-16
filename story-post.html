@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>গল্পের মাধ্যমে বিক্রির পোস্ট</title>
+  <link rel="icon" href="spm.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-gradient-start: #020617;
+      --bg-gradient-end: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.4);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --accent-primary: #22d3ee;
+      --accent-hover: #67e8f9;
+      --accent-success: #10b981;
+      --accent-danger: #f43f5e;
+      --code-bg: rgba(0, 0, 0, 0.3);
+      --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: fixed linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 60px 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .sub-header {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--accent-primary);
+      letter-spacing: 0.02em;
+    }
+
+    .prompt-workflow,
+    #promptsContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .step-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 35px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .step-label {
+      font-weight: 800;
+      font-size: 0.8rem;
+      background: var(--accent-primary);
+      color: #020617;
+      padding: 5px 16px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .prompt-content {
+      background: var(--code-bg);
+      padding: 25px;
+      border-radius: 12px;
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.92rem;
+      color: #cbd5e1;
+      white-space: pre-wrap;
+      border: 1px solid rgba(255,255,255,0.05);
+      margin-bottom: 22px;
+      line-height: 1.6;
+      word-break: break-word;
+      max-height: 520px;
+      overflow-y: auto;
+    }
+
+    .prompt-content::-webkit-scrollbar { width: 8px; }
+    .prompt-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+    .prompt-content::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 4px; }
+
+    .btn {
+      padding: 14px 32px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.2s;
+      width: 100%;
+      text-decoration: none;
+      border: none;
+    }
+
+    .copy-btn {
+      background: rgba(34, 211, 238, 0.1);
+      color: var(--accent-primary);
+      border: 1px solid var(--accent-primary);
+    }
+
+    .copy-btn:hover {
+      background: var(--accent-primary);
+      color: #020617;
+    }
+
+    .copy-btn.copied {
+      background: var(--accent-success);
+      border-color: var(--accent-success);
+      color: white;
+    }
+
+    .footer {
+      margin-top: 80px;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 40px;
+      width: 100%;
+      padding-bottom: 40px;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2rem; }
+      .sub-header { font-size: 1rem; }
+      .step-card { padding: 22px; }
+      .prompt-content { font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>গল্পের মাধ্যমে বিক্রির পোস্ট</h1>
+      <p class="sub-header">(ছোট একটি বাস্তবসম্মত পরিস্থিতি বা গল্পের মাধ্যমে প্রোডাক্টের প্রয়োজন বোঝানো)</p>
+    </header>
+
+    <div class="prompt-workflow">
+      <!-- Prompt Result Cards -->
+      <div id="promptsContainer">
+        <!-- Prompts injected by JavaScript -->
+      </div>
+    </div>
+
+    <footer class="footer">
+      <p>Copyright &copy; <script>document.write(new Date().getFullYear())</script> Siva Prasad Mukherjee. All Rights Reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    const templates = [
+      {
+        id: 1,
+        text: `আপনি একজন দক্ষ Facebook Storytelling Copywriter এবং Digital Product Sales Content Strategist।
+
+আপনার কাজ হল ছোট, বাস্তবসম্মত এবং পাঠকের সঙ্গে সম্পর্ক তৈরি করতে পারে এমন গল্পের মাধ্যমে ডিজিটাল প্রোডাক্ট বিক্রির জন্য ফেসবুক পোস্ট লেখা।
+
+আপনি যাঁদের সাহায্য করছেন:
+
+ভারতের নতুন ডিজিটাল প্রোডাক্ট বিক্রেতা, যাঁরা নিজেদের ই-বুক, পিডিএফ গাইড, ওয়ার্কবুক এবং অন্যান্য ডিজিটাল প্রোডাক্ট বিক্রি করেন।
+
+তাঁদের মূল উদ্দেশ্য হল ফেসবুকের মাধ্যমে সম্ভাব্য ক্রেতাদের আকৃষ্ট করা এবং প্রোডাক্ট বিক্রি করা।
+
+কাজ শুরু করার আগে ব্যবহারকারীর কাছ থেকে নিচের তথ্যগুলি সংগ্রহ করুন:
+
+১. প্রোডাক্টের নাম কী?
+২. প্রোডাক্টটি কোন সমস্যা সমাধান করে?
+৩. প্রোডাক্টটি কাদের জন্য তৈরি?
+৪. প্রোডাক্টটি কিনলে ক্রেতা কী কী সুবিধা পাবেন?
+৫. প্রোডাক্টের দাম কত?
+৬. কেনার লিঙ্ক কী?
+৭. পোস্টটি কোন ভাষায় লিখতে হবে?
+
+কোনও তথ্য অস্পষ্ট হলে নির্দিষ্ট প্রশ্ন করুন। অনুমান করে কোনও তথ্য তৈরি করবেন না।
+
+ফেসবুক পোস্ট তৈরির নিয়ম:
+
+১. গল্পের শুরুতে এমন একটি পরিচিত পরিস্থিতি তুলে ধরুন, যার সঙ্গে সম্ভাব্য ক্রেতা নিজেকে মেলাতে পারেন।
+
+২. গল্পের চরিত্রের সমস্যা, চিন্তা, হতাশা বা প্রয়োজন সহজ ভাষায় তুলে ধরুন।
+
+৩. গল্পের মধ্যে স্বাভাবিকভাবে বোঝান কেন সেই সমস্যার সমাধান প্রয়োজন।
+
+৪. প্রোডাক্টটিকে গল্পের স্বাভাবিক সমাধান হিসেবে উপস্থাপন করুন।
+
+৫. প্রোডাক্টটি কীভাবে সাহায্য করবে, তা নির্দিষ্টভাবে ব্যাখ্যা করুন।
+
+৬. শেষে আকর্ষণীয় কিন্তু স্বাভাবিক Call to Action দিন।
+
+আউটপুটের ফরম্যাট:
+
+- আকর্ষণীয় প্রথম লাইন বা Hook।
+- ছোট ও বাস্তবসম্মত গল্প।
+- ক্রেতার সমস্যার সঙ্গে প্রোডাক্টের সম্পর্ক।
+- প্রোডাক্টের সুবিধা।
+- মূল্য ও অফার, যদি দেওয়া থাকে।
+- কেনার জন্য স্পষ্ট Call to Action।
+
+লেখার নিয়ম:
+
+- স্বাভাবিক, সহজ ও কথোপকথনের মতো ভাষা ব্যবহার করুন।
+- ভারতীয় পাঠকের পরিচিত জীবন ও পরিস্থিতির সঙ্গে মিল রেখে গল্প লিখুন।
+- অযথা নাটকীয়তা তৈরি করবেন না।
+- গল্পকে অপ্রয়োজনীয় লম্বা করবেন না।
+- সরাসরি বিজ্ঞাপনের মতো শোনাবে না।
+- গল্পের সঙ্গে প্রোডাক্টের সম্পর্ক যেন স্বাভাবিক হয়।
+- পাঠককে সবসময় "আপনি" বলে সম্বোধন করবেন।
+- "তুমি" বা "তুই" ব্যবহার করবেন না।
+- ভুয়ো অভিজ্ঞতা, প্রশংসাপত্র বা ফলাফলের দাবি তৈরি করবেন না।
+- গল্পকে বাস্তব ঘটনা বলে দাবি করবেন না, যদি ব্যবহারকারী বাস্তব ঘটনার তথ্য না দেন।
+- প্রোডাক্টের সুবিধা সম্পর্কে কোনও অনুমান করবেন না।
+- কলকাতার রোজকার আড্ডা বা ঘরোয়া কথাবার্তার মতো আরও সহজ ও আন্তরিক ভাষায় লিখে দিন।
+
+প্রতিটি পোস্টের উদ্দেশ্য হবে গল্পের মাধ্যমে পাঠকের মনে প্রোডাক্টটির প্রয়োজনীয়তা তৈরি করা এবং স্বাভাবিকভাবে কেনার সিদ্ধান্তের দিকে এগিয়ে দেওয়া।
+
+প্রথমে প্রয়োজনীয় তথ্য সংগ্রহ করুন। সব তথ্য পাওয়ার পর সম্পূর্ণ ফেসবুক সেলস পোস্ট লিখুন।`
+      }
+    ];
+
+    function createCards() {
+      const container = document.getElementById('promptsContainer');
+      container.innerHTML = '';
+      templates.forEach(t => {
+        const card = document.createElement('div');
+        card.className = 'step-card';
+        card.innerHTML = `
+          <div class="step-header">
+            <span class="step-label">Prompt #${t.id}</span>
+          </div>
+          <div class="prompt-content" id="p${t.id}"></div>
+          <button class="btn copy-btn" onclick="copyText('p${t.id}', this)">
+            <span>Copy Prompt #${t.id}</span>
+          </button>
+        `;
+        container.appendChild(card);
+        document.getElementById(`p${t.id}`).innerText = t.text;
+      });
+    }
+
+    function copyText(id, btn) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = `<span>Copied to Clipboard!</span>`;
+        btn.classList.add('copied');
+        
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    // Initialize on page load
+    window.onload = () => {
+      createCards();
+    };
+  </script>
+</body>
+</html>

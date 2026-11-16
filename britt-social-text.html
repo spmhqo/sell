@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Britt Social - share your personal observations</title>
+  <link rel="icon" href="spm.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-gradient-start: #020617;
+      --bg-gradient-end: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.4);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --accent-primary: #22d3ee;
+      --accent-hover: #67e8f9;
+      --accent-success: #10b981;
+      --accent-danger: #f43f5e;
+      --code-bg: rgba(0, 0, 0, 0.3);
+      --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: fixed linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 60px 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .sub-header {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--accent-primary);
+      letter-spacing: 0.02em;
+    }
+
+    .prompt-workflow {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .step-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 35px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    #promptsContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .step-label {
+      font-weight: 800;
+      font-size: 0.8rem;
+      background: var(--accent-primary);
+      color: #020617;
+      padding: 5px 16px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .clear-btn {
+      background: transparent;
+      border: 1px solid var(--accent-danger);
+      color: var(--accent-danger);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+
+    .clear-btn:hover {
+      background: var(--accent-danger);
+      color: white;
+    }
+
+    label {
+      display: block;
+      color: var(--accent-primary);
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      letter-spacing: 0.03em;
+    }
+
+    .dynamic-input {
+      width: 100%;
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      padding: 16px;
+      border-radius: 12px;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.5;
+      outline: none;
+      resize: vertical;
+      min-height: 140px;
+      transition: border-color 0.3s;
+    }
+
+    .dynamic-input:focus {
+      border-color: var(--accent-primary);
+    }
+
+    .prompt-content {
+      background: var(--code-bg);
+      padding: 25px;
+      border-radius: 12px;
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.92rem;
+      color: #cbd5e1;
+      white-space: pre-wrap;
+      border: 1px solid rgba(255,255,255,0.05);
+      margin-bottom: 22px;
+      line-height: 1.6;
+      word-break: break-word;
+      max-height: 520px;
+      overflow-y: auto;
+    }
+
+    .prompt-content::-webkit-scrollbar { width: 8px; }
+    .prompt-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+    .prompt-content::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 4px; }
+
+    .btn {
+      padding: 14px 32px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.2s;
+      width: 100%;
+      text-decoration: none;
+      border: none;
+    }
+
+    .copy-btn {
+      background: rgba(34, 211, 238, 0.1);
+      color: var(--accent-primary);
+      border: 1px solid var(--accent-primary);
+    }
+
+    .copy-btn:hover {
+      background: var(--accent-primary);
+      color: #020617;
+    }
+
+    .copy-btn.copied {
+      background: var(--accent-success);
+      border-color: var(--accent-success);
+      color: white;
+    }
+
+    .footer {
+      margin-top: 80px;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 40px;
+      width: 100%;
+      padding-bottom: 40px;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2rem; }
+      .sub-header { font-size: 1rem; }
+      .step-card { padding: 22px; }
+      .prompt-content { font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Britt Social</h1>
+      <p class="sub-header">(share your personal observations)</p>
+    </header>
+
+    <div class="prompt-workflow">
+      
+      <!-- Multiline Input Card -->
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-label">Input Data</span>
+          <button class="clear-btn" onclick="resetInput('inputText')">Reset</button>
+        </div>
+        <label for="inputText">[Insert Text Here]</label>
+        <textarea id="inputText" class="dynamic-input" placeholder="Type or paste your text here..." oninput="updatePrompts()"></textarea>
+      </div>
+
+      <!-- Prompt Result Cards -->
+      <div id="promptsContainer">
+        <!-- Prompts injected by JavaScript -->
+      </div>
+
+    </div>
+
+    <footer class="footer">
+      <p>Copyright &copy; <script>document.write(new Date().getFullYear())</script> Siva Prasad Mukherjee. All Rights Reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    const templates = [
+      {
+        id: 1,
+        text: `ROLE
+
+আপনি একজন Personal Experience-Based Social Media Content Writer।
+
+আপনার কাজ হলো, আমার দেওয়া TEXT-এর বক্তব্য ও তথ্যের ভিত্তিতে আমার ব্যক্তিগত অভিজ্ঞতা, পরীক্ষা-নিরীক্ষা, পর্যবেক্ষণ এবং উপলব্ধিগুলো নিয়ে একটি স্বাভাবিক, সাবলীল ও আন্তরিক সোশ্যাল মিডিয়া পোস্ট লেখা।
+
+WRITING STYLE & APPROACH
+
+আমি যেভাবে কলকাতার রোজকার আড্ডা বা ঘরোয়া কথাবার্তায় নিজের অভিজ্ঞতা অন্যদের সঙ্গে শেয়ার করি, লেখার ভাষা ও প্রকাশভঙ্গিও ঠিক সেরকম হবে।
+
+লেখার ক্ষেত্রে:
+
+- স্বাভাবিক, আধুনিক কলকাতার বাংলা (ভারত) ব্যবহার করবেন।
+- ভাষা হবে সহজ, সাবলীল, আন্তরিক ও কথোপকথনের মতো।
+- লেখাটা যেন বন্ধুত্বপূর্ণ আলোচনার মতো শোনায়, কোনও আনুষ্ঠানিক আর্টিকেল বা AI-লেখা কনটেন্টের মতো নয়।
+- অপ্রয়োজনীয় সাহিত্যিক ভাষা, ভারী শব্দ, অতিরিক্ত আনুষ্ঠানিকতা এবং কৃত্রিম বাক্যগঠন এড়িয়ে চলবেন।
+- বক্তব্য যেন স্বাভাবিকভাবে এক জায়গা থেকে অন্য জায়গায় এগিয়ে যায়।
+- লেখার মধ্যে প্রয়োজন অনুযায়ী কৌতূহল, সমস্যা, চিন্তা, পরীক্ষা-নিরীক্ষা এবং উপলব্ধির স্বাভাবিক প্রকাশ থাকবে।
+
+NARRATIVE FLOW
+
+পোস্টের বক্তব্য নিচের ক্রম অনুসরণ করে সাজাবেন:
+
+1. Starting Point: কোনও একটা নির্দিষ্ট উদ্দেশ্যে আমি কী কাজ করছিলাম?
+2. The Problem: কাজটা করতে গিয়ে কোথায় কোথায় আটকে যাচ্ছিলাম? বারবার কী কী আলাদা উপায়ে চেষ্টা করছিলাম?
+3. The Unresolved Situation: এত চেষ্টা সত্ত্বেও আমি ঠিক যে জিনিসটা পেতে চাইছিলাম, সেটা কেন পাচ্ছিলাম না?
+4. The New Idea: বিভিন্ন উপায় নিয়ে পরীক্ষা-নিরীক্ষা করতে করতে কীভাবে একটা নতুন আইডিয়া বা সম্ভাব্য সমাধানের কথা আমার মাথায় এলো?
+5. The Reasoning: কেন আমার মনে হয়েছিল, এই পদ্ধতিতে কাজটা করলে কাঙ্ক্ষিত ফল পাওয়া যেতে পারে?
+6. The Experiment: সেই ধারণা অনুযায়ী আমি কী করলাম? কীভাবে পরীক্ষা করে দেখলাম?
+7. The Observation: পরীক্ষা করতে গিয়ে কী কী বিষয় লক্ষ্য করলাম?
+8. The Discovery: সেই পর্যবেক্ষণ থেকে নতুন কী বিষয় বুঝতে বা আবিষ্কার করতে পারলাম?
+9. The Realisation: পুরো অভিজ্ঞতা থেকে আমার কী উপলব্ধি হলো?
+10. The Conclusion: এই অভিজ্ঞতার ভিত্তিতে শেষ পর্যন্ত কী করা উচিত বলে মনে হলো?
+11. The Practical Method: কাজটা কীভাবে করতে হবে? প্রয়োজনীয় পদ্ধতি বা ধাপগুলো কী?
+12. The Tool: এই কাজের জন্য কোন টুল ব্যবহার করা যেতে পারে?
+13. The Tool Link: TEXT-এ দেওয়া টুলের লিঙ্ক সংগ্রহ করে পোস্টে প্রাসঙ্গিক জায়গায় যুক্ত করবেন।
+
+এই পয়েন্টগুলোকে আলাদা আলাদা শিরোনাম দিয়ে সাজানোর প্রয়োজন নেই। বরং স্বাভাবিক কথোপকথনের ধারায় একটার সঙ্গে অন্যটাকে যুক্ত করে একটি সাবলীল গল্পের মতো লিখবেন।
+
+IMPORTANT CONTENT RULES
+
+1. আমার দেওয়া TEXT-ই হবে পোস্টের মূল তথ্য ও বক্তব্যের উৎস।
+2. আমার অভিজ্ঞতা, চিন্তাভাবনা, যুক্তি, পর্যবেক্ষণ এবং সিদ্ধান্তের মূল অর্থ পরিবর্তন করবেন না।
+3. TEXT-এ নেই এমন কোনও ব্যক্তিগত অভিজ্ঞতা, ঘটনা, পরীক্ষা, পর্যবেক্ষণ, আবিষ্কার বা ফলাফল নিজের থেকে তৈরি করবেন না।
+4. কোনও তথ্য অনুপস্থিত থাকলে অনুমান করে পূরণ করবেন না। প্রয়োজন হলে সেই অংশ বাদ দিয়ে উপলব্ধ তথ্যের ভিত্তিতে লেখাটি তৈরি করবেন।
+5. আমার বক্তব্যের বাইরে গিয়ে নতুন কোনও শিক্ষা, উপদেশ বা সিদ্ধান্ত যোগ করবেন না।
+6. পোস্টটিকে অযথা দীর্ঘ করবেন না। তবে বক্তব্যের স্বাভাবিক প্রবাহ এবং প্রয়োজনীয় তথ্য বজায় রাখবেন।
+7. Tool Link TEXT-এ থাকলে সেটি ব্যবহার করবেন। না থাকলে কোনও লিঙ্ক বানিয়ে দেবেন না।
+
+TASK
+
+নীচে দেওয়া TEXT-টিকে উপরের সমস্ত নির্দেশনা অনুসরণ করে একটি সোশ্যাল মিডিয়া পোস্টে রূপান্তর করুন।
+
+পোস্টটি এমনভাবে লিখবেন যেন পাঠকের মনে স্পষ্ট অনুভূতি হয় যে আমি নিজের কোনও বাস্তব অভিজ্ঞতা, সমস্যা, পরীক্ষা-নিরীক্ষা এবং সেখান থেকে পাওয়া উপলব্ধির কথা স্বাভাবিকভাবে শেয়ার করছি।
+
+লেখাটি যেন আমার নিজের মুখের ভাষার মতো শোনায়, কোনও তৃতীয় ব্যক্তি আমার সম্পর্কে লিখছেন এমন নয়।
+
+TEXT
+
+[Insert Text Here]`
+      },
+      {
+        id: 2,
+        text: `কলকাতার রোজকার আড্ডা বা ঘরোয়া কথাবার্তায় মানুষ যে রকম সহজ, সাবলীল ও আন্তরিক ভাষায় কথাবার্তা বলে সেরকম ভাষায় ও অ্যাপ্রোচে আমি সোস্যাল মিডিয়ায় আমার ব্যক্তিগত অভিজ্ঞতা শেয়ার করে পোস্ট লিখতে চাই।
+
+আমার বক্তব্যের ক্রমটা হবে এইরকম - 
+
+কোনও একটা উদ্দেশ্যে কোনও একটা কাজ করছিলাম। বারবার আটকে পড়ছিলাম ও আলাদা আলাদা পথে বারবার নতুন করে চেষ্টা করছিলাম।
+তবুও আমি ঠিক সেই জিনিসটা আমি কিছুতেই পাচ্ছিলাম না, যে জিনিসটা আমি পেতে চাইছিলাম।
+সেই পরিস্থিতিতে নানান উপায় নিয়ে এক্সপেরিমেন্ট করতে করতে একটা জিনিস / আইডিয়া আমার মাথায় এলো - এই কাজটা এইভাবে করলে হতে পারে।
+কেন সেটাকেই সম্ভাব্য সমাধান বলে মনে হল?
+সেইমতো কি করলাম।
+পরীক্ষা করতে করতে কি লক্ষ্য করলাম?
+পর্যবেক্ষণ থেকে কি নতুন বিষয় আবিস্কার করলাম?
+এই অভিজ্ঞতা (ঘটনা) থেকে কি উপলব্ধি হল?
+সিদ্ধান্ত – কি করা উচিত
+কিভাবে করতে হবে 
+কোন টুলটা এরজন্য ব্যবহার করতে হবে
+টুল লিংক (কালেকট ইট ফ্রম হিয়ার) 
+
+TASK
+নীচে দেওয়া TEXT-টাকে উপরে আমার দেওয়া ক্রমটাকে follow করে কলকাতার রোজকার আড্ডা বা ঘরোয়া কথাবার্তায় মানুষ যে রকম সহজ, সাবলীল ও আন্তরিক ভাষায় কথাবার্তা বলে সেরকম ভাষায় ও অ্যাপ্রোচে একটা সোস্যাল মিডিয়া পোস্ট লিখে দাও যেন পাঠকের মনে স্পষ্ট অনুভূতি হয় যে পোস্টটা আমি আমার নিজের ব্যক্তিগত অভিজ্ঞতা শেয়ার করে লিখেছি।
+
+TEXT
+[Insert Text Here]`
+      }
+    ];
+
+    function createCards() {
+      const container = document.getElementById('promptsContainer');
+      container.innerHTML = '';
+      templates.forEach(t => {
+        const card = document.createElement('div');
+        card.className = 'step-card';
+        card.innerHTML = `
+          <div class="step-header">
+            <span class="step-label">Prompt #${t.id}</span>
+          </div>
+          <div class="prompt-content" id="p${t.id}"></div>
+          <button class="btn copy-btn" onclick="copyText('p${t.id}', this)">
+            <span>Copy Prompt #${t.id}</span>
+          </button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function updatePrompts() {
+      const textVal = document.getElementById('inputText').value.trim() || "[Insert Text Here]";
+
+      templates.forEach(t => {
+        const updatedText = t.text.split('[Insert Text Here]').join(textVal);
+        document.getElementById(`p${t.id}`).innerText = updatedText;
+      });
+    }
+
+    function resetInput(fieldId) {
+      document.getElementById(fieldId).value = "";
+      updatePrompts();
+    }
+
+    function copyText(id, btn) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = `<span>Copied to Clipboard!</span>`;
+        btn.classList.add('copied');
+        
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    // Initialize on page load
+    window.onload = () => {
+      createCards();
+      updatePrompts();
+    };
+  </script>
+</body>
+</html>

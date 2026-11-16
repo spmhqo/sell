@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bangla Sales Page Genie</title>
+  <link rel="icon" href="spm.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-gradient-start: #020617;
+      --bg-gradient-end: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.4);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --accent-primary: #22d3ee;
+      --accent-hover: #67e8f9;
+      --accent-success: #10b981;
+      --accent-danger: #f43f5e;
+      --code-bg: rgba(0, 0, 0, 0.3);
+      --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: fixed linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 60px 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .sub-header {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--accent-primary);
+      letter-spacing: 0.02em;
+    }
+
+    .prompt-workflow {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    #promptsContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .step-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 35px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .step-label {
+      font-weight: 800;
+      font-size: 0.8rem;
+      background: var(--accent-primary);
+      color: #020617;
+      padding: 5px 16px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .clear-btn {
+      background: transparent;
+      border: 1px solid var(--accent-danger);
+      color: var(--accent-danger);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+
+    .clear-btn:hover {
+      background: var(--accent-danger);
+      color: white;
+    }
+
+    label {
+      display: block;
+      color: var(--accent-primary);
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+      letter-spacing: 0.03em;
+    }
+
+    .dynamic-input {
+      width: 100%;
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      padding: 16px;
+      border-radius: 12px;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.5;
+      outline: none;
+      resize: vertical;
+      min-height: 140px;
+      transition: border-color 0.3s;
+    }
+
+    .dynamic-input:focus {
+      border-color: var(--accent-primary);
+    }
+
+    .prompt-content {
+      background: var(--code-bg);
+      padding: 25px;
+      border-radius: 12px;
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.92rem;
+      color: #cbd5e1;
+      white-space: pre-wrap;
+      border: 1px solid rgba(255,255,255,0.05);
+      margin-bottom: 22px;
+      line-height: 1.6;
+      word-break: break-word;
+      max-height: 520px;
+      overflow-y: auto;
+    }
+
+    .prompt-content::-webkit-scrollbar { width: 8px; }
+    .prompt-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+    .prompt-content::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 4px; }
+
+    .btn {
+      padding: 14px 32px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.2s;
+      width: 100%;
+      text-decoration: none;
+      border: none;
+    }
+
+    .copy-btn {
+      background: rgba(34, 211, 238, 0.1);
+      color: var(--accent-primary);
+      border: 1px solid var(--accent-primary);
+    }
+
+    .copy-btn:hover {
+      background: var(--accent-primary);
+      color: #020617;
+    }
+
+    .copy-btn.copied {
+      background: var(--accent-success);
+      border-color: var(--accent-success);
+      color: white;
+    }
+
+    .footer {
+      margin-top: 80px;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 40px;
+      width: 100%;
+      padding-bottom: 40px;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2rem; }
+      .sub-header { font-size: 1rem; }
+      .step-card { padding: 22px; }
+      .prompt-content { font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Bangla Sales Page Genie</h1>
+      <p class="sub-header">(for my Bangla products)</p>
+    </header>
+
+    <div class="prompt-workflow">
+      
+      <!-- Multiline Input Card 1 -->
+      <div class="step-card">
+        <div class="step-header">
+          <span class="step-label">Input Data 1</span>
+          <button class="clear-btn" onclick="resetInput('inputSalesCopy')">Reset</button>
+        </div>
+        <label for="inputSalesCopy">[Sales Copy]</label>
+        <textarea id="inputSalesCopy" class="dynamic-input" placeholder="Type or paste the Sales Copy here..." oninput="updatePrompts()"></textarea>
+      </div>
+
+      <!-- Prompt Result Cards -->
+      <div id="promptsContainer">
+        <!-- Prompts injected by JavaScript -->
+      </div>
+
+    </div>
+
+    <footer class="footer">
+      <p>Copyright &copy; <script>document.write(new Date().getFullYear())</script> Siva Prasad Mukherjee. All Rights Reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    const templates = [
+      {
+        id: 1,
+        text: `You are an elite website designer, frontend developer, creative director, and UX specialist.
+
+Turn a beginner's one-sentence idea into a stunning, responsive website with a complete built-in visual editor.
+
+**DELIVERABLE:** Create ONE standalone, downloadable HTML file containing the complete website and visual editor. This original file becomes the owner's editable master.
+
+Inside its editor, include ONLY ONE download button:
+
+**🌐 DOWNLOAD LIVE WEBSITE**
+
+It generates a clean, publish-ready \`index.html\` with all editing functionality physically removed.
+
+**NEVER implement a Download Editable Website button.** The original HTML file already serves as the editable master.
+
+Use HTML5, CSS3, vanilla JavaScript, and inline SVG. No APIs, libraries, servers, external assets, databases, installations, or subscriptions.
+
+**EXPERIENCE:** DESCRIBE → GENERATE → EDIT → PREVIEW → DOWNLOAD LIVE → PUBLISH.
+
+---
+
+## STEP 1 — ASK ONE QUESTION ONLY
+
+Ask:
+
+**✨ What kind of website would you like me to create? Tell me about your business, service, hobby, or idea in just one sentence.**
+
+Examples:
+- A website for my dog grooming business.
+- A personal photography portfolio.
+- A website for my homemade cake business.
+- A landing page for my digital product.
+- A website for my life coaching service.
+
+STOP and wait for the answer.
+
+Ask nothing else. Automatically determine the design, colors, layout, and content.
+
+Use editable placeholders for missing facts. Never invent testimonials, reviews, certifications, achievements, prices, addresses, or contact information.
+
+---
+
+## STEP 2 — GENERATE A PREMIUM WEBSITE
+
+Create a complete single-page website containing:
+
+1. Beautiful branded header and functional navigation.
+2. Stunning hero, powerful headline, and CTA.
+3. Three meaningful benefit or service cards.
+4. Engaging About section.
+5. Beautiful gallery or visual showcase.
+6. Functional contact section.
+7. Professional footer.
+
+**DESIGN:** Industry-specific premium styling, sophisticated colors, professional typography, large headlines, polished cards, icons, gradients, shadows, tasteful animations, spacious layouts, and responsive desktop/mobile design.
+
+Every business must receive an appropriate, distinctive visual identity. Avoid generic templates.
+
+Use self-contained SVG/CSS artwork when reliable photography is unavailable. No broken links or external dependencies.
+
+Maintain accessibility, readable contrast, and reduced-motion support.
+
+Every CTA must perform a meaningful action.
+
+**HEADER RULE:** If a dedicated Get in Touch button already navigates to Contact, omit a redundant Contact text link from the main navigation.
+
+---
+
+## STEP 3 — THE MAGIC VISUAL EDITOR
+
+Place a floating button:
+
+**✏️ EDIT MY WEBSITE**
+
+Clicking opens a polished, beginner-friendly floating editor.
+
+Implement ALL these features.
+
+### A. DIRECT TEXT EDITING
+
+Allow click-to-edit headings, paragraphs, section titles, descriptions, button labels, contact text, and footer content.
+
+Show subtle editing highlights, update instantly, preserve styling, treat pasted text safely, and prevent accidental navigation while editing.
+
+### B. DRAGGABLE EDITOR
+
+Allow users to drag the floating panel by its header.
+
+Support mouse/touch where practical, keep the panel within the viewport, prevent interference with inputs, include a close button, and adapt to mobile.
+
+### C. EDITABLE NAVIGATION
+
+Include:
+
+**🧭 EDIT NAVIGATION MENU**
+
+Allow users to rename navigation labels without changing their original section destinations.
+
+**EMPTY LABEL RULE:**
+
+When a label is blank or contains only spaces:
+
+- Hide its entire navigation item without leaving a gap or clickable area.
+- Keep its editor input for restoration.
+- Restore its original destination when text is entered.
+- Synchronize desktop/mobile navigation.
+- Exclude empty items from the live export.
+
+Preserve the dedicated header Contact CTA.
+
+### D. HOVER-AND-REPLACE PHOTOS
+
+Include:
+
+**📷 CHOOSE A PICTURE TO REPLACE**
+
+**REQUIRED WORKFLOW:**
+
+1. Clicking activates image-selection mode, NOT the file browser.
+2. Display: "Hover over the picture you want to replace, then click it."
+3. Hovering reveals **📷 REPLACE IMAGE** on that picture.
+4. Clicking the selected picture opens the file browser.
+5. The uploaded photo replaces ONLY that picture.
+6. Support touchscreen selection.
+7. Canceling retains the original image.
+
+Never require an unrelated image dropdown.
+
+### E. AUTOMATIC NO-CROP IMAGE FITTING
+
+Replacement photographs must fit completely inside their original frames.
+
+- Use \`object-fit: contain\` and \`object-position: center center\`.
+- Preserve frame dimensions, positioning, border radius, and layout.
+- Preserve the photo's natural aspect ratio.
+- Never crop, stretch, or distort uploaded photographs.
+- Center the whole image.
+- Allow background space when frame proportions differ.
+- Support wide, tall, square, landscape, and portrait images.
+- Preserve fitting in the live export.
+
+Never use \`object-fit: cover\` for replacement photographs.
+
+Embed uploaded photos as data URLs or equivalent. Validate formats, handle errors, warn about large files, and provide original-image restoration where feasible.
+
+### F. WEBSITE COLORS
+
+Include:
+
+**🎨 WEBSITE COLORS**
+
+Live color pickers for primary, accent, and suitable background colors. Prefer CSS variables and maintain readable contrast.
+
+### G. BUSINESS NAME
+
+Include:
+
+**🏷️ BUSINESS / WEBSITE NAME**
+
+Update header branding, appropriate footer branding, and browser title without modifying unrelated content.
+
+---
+
+## STEP 4 — EDIT AND PREVIEW MODE (CRITICAL V5.8 FIX)
+
+**THE EDIT MY WEBSITE LAUNCHER MUST ALWAYS REMAIN VISIBLE IN THE EDITABLE MASTER'S PREVIEW MODE.**
+
+Implement two modes:
+
+### ✏️ EDIT MODE
+
+- Open the editor panel.
+- Enable text editing and customization.
+- Enable image replacement.
+- Enable navigation, colors, branding, and contact editing.
+- Display editing indicators when appropriate.
+
+### 👁️ PREVIEW WEBSITE
+
+When clicked:
+
+1. Disable content editing.
+2. Hide the floating editor PANEL.
+3. Hide editing outlines and image replacement overlays.
+4. Restore normal navigation and CTA behavior.
+5. **KEEP THE FLOATING ✏️ EDIT MY WEBSITE LAUNCHER VISIBLE AND CLICKABLE.**
+
+The user must be able to click the launcher immediately and reopen the editor without reloading the page.
+
+All previous changes must remain intact.
+
+### CRITICAL IMPLEMENTATION RULE
+
+Never use CSS that hides both the editor panel and launcher in Preview Mode.
+
+**INCORRECT:**
+
+\`body.preview #editor, body.preview #edit-launch { display:none!important; }\`
+
+**CORRECT:**
+
+\`body.preview #editor { display:none!important; }\`
+
+Keep \`#edit-launch\` visible in Preview Mode.
+
+For example:
+
+\`body.preview #edit-launch { display:block!important; }\`
+
+When the launcher is clicked:
+
+1. Remove the page's \`preview\` state/class.
+2. Activate Edit Mode.
+3. Reopen the editor panel.
+4. Preserve current edits.
+
+The launcher and editor panel must have separate visibility controls.
+
+The launcher must remain above ordinary website content, reachable on desktop and mobile, and not be disabled by preview-mode overlays or pointer-event rules.
+
+**ABSOLUTE RULE: The editable master must never enter a state where users cannot reopen the editor.**
+
+Only the downloaded LIVE website may permanently remove the launcher.
+
+---
+
+## STEP 5 — FUNCTIONAL CONTACT SYSTEM
+
+Inside the editor, include:
+
+**📧 BUSINESS CONTACT EMAIL**
+
+Allow the owner to enter, validate, and save a real email address. Never invent one.
+
+Default visitor-facing contact button:
+
+**📋 COPY EMAIL ADDRESS**
+
+Clicking must:
+
+- Copy the configured email.
+- Display: "✓ Email copied! Paste it into your email app."
+- Never open an empty browser tab.
+- Never pretend to send email.
+- Provide a manual-copy fallback when clipboard access is blocked.
+- Display clear guidance when no valid email exists.
+
+An optional **✉️ OPEN EMAIL APP** link may use \`mailto:\` without unnecessary new-tab behavior.
+
+Only include telephone, booking, or messaging links when valid destinations exist. Never create fake working forms.
+
+---
+
+## STEP 6 — PRESERVE EDITING CHANGES
+
+The original HTML supplied by ChatGPT is the editable master.
+
+**DO NOT CREATE AN EDITABLE HTML EXPORT.**
+
+Keep the latest customization in application state.
+
+Where permitted, automatically save changes in localStorage, including:
+
+- Text edits.
+- Navigation labels and visibility.
+- Business name.
+- Colors.
+- Contact email.
+- Uploaded images.
+
+Restore saved changes when reopening the same master file in the same browser context.
+
+Handle disabled storage and quota failures gracefully.
+
+Browser storage is not a guaranteed permanent backup and may not transfer between devices or browsers.
+
+Never claim that editing automatically rewrites the original HTML file on disk.
+
+The live export must use the CURRENT customized state.
+
+---
+
+## STEP 7 — ONE WORKING LIVE WEBSITE DOWNLOAD
+
+Inside the editor, include ONLY:
+
+**🌐 DOWNLOAD LIVE WEBSITE**
+
+Generate a clean standalone file named:
+
+\`index.html\`
+
+### INCLUDE
+
+- Final customized website.
+- Updated text, navigation, colors, branding, and contact details.
+- Embedded uploaded photographs.
+- No-crop image fitting.
+- Responsive styling.
+- Working navigation, CTA buttons, contact copying, and mobile menu.
+- Only visitor-facing JavaScript.
+
+### PHYSICALLY REMOVE
+
+- EDIT MY WEBSITE launcher.
+- Floating editor.
+- Text-editing functionality.
+- Editing outlines and controls.
+- Image replacement and upload controls.
+- Color pickers and business-name fields.
+- Navigation editing controls.
+- Editor-specific CSS and JavaScript.
+- Editor event handlers and attributes.
+- Local editing state and editor storage logic.
+- Download controls.
+- Hidden editor interfaces.
+- Empty navigation links.
+- Any ChatGPT preview-environment scripts or styles.
+
+Do not merely hide editor elements using CSS.
+
+### RELIABLE EXPORT ARCHITECTURE
+
+Prefer constructing the live website from a clean visitor-facing template populated with current website data.
+
+Separate website content/state, public functionality, and editor-only components.
+
+Do not serialize unknown preview-environment wrappers.
+
+If cloning a DOM root, remember the cloned \`<html>\` element IS the root. Never call \`clone.querySelector("html")\` expecting it to find itself.
+
+Validate queried elements before accessing their properties.
+
+### ACTUAL DOWNLOAD BEHAVIOR
+
+1. Give the button a unique ID and \`type="button"\`.
+2. Register its click listener after DOM initialization.
+3. Capture the latest customized state.
+4. Construct a complete HTML document with \`<!DOCTYPE html>\`.
+5. Include only public HTML, CSS, JavaScript, and embedded pictures.
+6. Escape user-entered content safely.
+7. Create a Blob with \`text/html;charset=utf-8\`.
+8. Create an object URL.
+9. Create and append an anchor with \`download="index.html"\`.
+10. Trigger its click and remove the anchor.
+11. Revoke the object URL after a safe delay.
+12. Never use \`window.open()\` for downloads.
+13. Show meaningful errors when export preparation fails.
+14. Preserve all visitor-facing functionality.
+
+**The button must initiate a real HTML download, not merely display a success message.**
+
+---
+
+## STEP 8 — TECHNICAL QUALITY AND TESTING
+
+Use HTML5, CSS3, vanilla JavaScript, inline SVG, and native browser APIs only.
+
+No external dependencies.
+
+Test as thoroughly as available tools permit.
+
+### EDITOR TESTS
+
+- Editor opens, closes, and drags.
+- Text, branding, navigation, colors, and contact editing work.
+- Empty navigation items disappear and can be restored.
+- Navigation links retain their destinations.
+- Image selection occurs before the file picker opens.
+- Wide and tall photos fit without cropping.
+- Browser auto-save restores edits where permitted.
+- Contact-copy functionality works or provides a fallback.
+- Mobile layout remains functional.
+
+### MANDATORY PREVIEW MODE TEST
+
+1. Open the editable HTML master.
+2. Click EDIT MY WEBSITE.
+3. Confirm the editor opens.
+4. Click PREVIEW WEBSITE.
+5. Confirm the editing panel disappears.
+6. **Confirm EDIT MY WEBSITE remains visible and clickable.**
+7. Click EDIT MY WEBSITE again.
+8. Confirm the editing panel reopens.
+9. Confirm all previous edits remain.
+10. Repeat the Edit → Preview → Edit cycle multiple times.
+11. Confirm the launcher is accessible on mobile layouts.
+
+**If the launcher disappears or cannot reopen the editor, fix the code before delivery.**
+
+### LIVE EXPORT TESTS
+
+1. Click DOWNLOAD LIVE WEBSITE.
+2. Confirm a real \`index.html\` file is generated.
+3. Reopen the file.
+4. Confirm all customizations and pictures are preserved.
+5. Confirm NO editor launcher, panel, or editing scripts remain.
+6. Confirm navigation, CTA buttons, contact actions, and mobile menus work.
+7. Check JavaScript errors.
+8. Confirm no dependence on the original editor or browser storage.
+
+Fix detectable issues before delivery.
+
+Never claim interactive tests were performed unless they actually were.
+
+---
+
+## STEP 9 — DELIVER THE COMPLETE WEBSITE
+
+After receiving the user's website idea, create the complete functional website.
+
+If file creation is available:
+
+- Generate the original standalone editable HTML file.
+- Provide the actual downloadable link in ChatGPT.
+- Display an interactive preview when supported.
+
+The original file is the editable master and contains ONE download button for exporting the clean live website.
+
+If direct file creation is unavailable, provide the complete HTML/CSS/JavaScript source in one code block with brief save instructions.
+
+Never deliver a mockup, partial implementation, or development plan.
+
+Do not ask additional questions.
+
+**FINAL EXPERIENCE:**
+
+DESCRIBE → GENERATE → EDIT → PREVIEW → EDIT AGAIN → DOWNLOAD LIVE → PUBLISH.
+
+For future changes:
+
+REOPEN ORIGINAL MASTER → RESTORE AVAILABLE SAVED CHANGES → EDIT → DOWNLOAD NEW LIVE WEBSITE.
+
+---
+
+# START NOW
+
+Ask ONLY:
+
+**✨ What kind of website would you like me to create? Tell me about your business, service, hobby, or idea in just one sentence.**
+
+Show the five examples from Step 1.
+
+Then STOP and wait for the answer.`
+      },
+      {
+        id: 2,
+        text: `আমার ডিজিট্যাল প্রোডাক্ট বিক্রি করার জন্য একটা ল্যান্ডিং পেজ। with this exact Sales Copy:
+
+[Sales Copy]`
+      },
+      {
+        id: 3,
+        text: `download link is not working`
+      },
+      {
+        id: 4,
+        text: `remove the edit website button from the site`
+      }
+    ];
+
+    function createCards() {
+      const container = document.getElementById('promptsContainer');
+      container.innerHTML = '';
+      templates.forEach(t => {
+        const card = document.createElement('div');
+        card.className = 'step-card';
+        card.innerHTML = `
+          <div class="step-header">
+            <span class="step-label">Prompt #${t.id}</span>
+          </div>
+          <div class="prompt-content" id="p${t.id}"></div>
+          <button class="btn copy-btn" onclick="copyText('p${t.id}', this)">
+            <span>Copy Prompt #${t.id}</span>
+          </button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function updatePrompts() {
+      const salesCopyVal = document.getElementById('inputSalesCopy').value.trim() || "[Sales Copy]";
+
+      templates.forEach(t => {
+        let updatedText = t.text;
+        if (t.id === 2) {
+          updatedText = updatedText.split('[Sales Copy]').join(salesCopyVal);
+        }
+        document.getElementById(`p${t.id}`).innerText = updatedText;
+      });
+    }
+
+    function resetInput(fieldId) {
+      document.getElementById(fieldId).value = "";
+      updatePrompts();
+    }
+
+    function copyText(id, btn) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = `<span>Copied to Clipboard!</span>`;
+        btn.classList.add('copied');
+        
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    // Initialize on page load
+    window.onload = () => {
+      createCards();
+      updatePrompts();
+    };
+  </script>
+</body>
+</html>
